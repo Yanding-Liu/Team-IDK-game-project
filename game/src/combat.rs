@@ -57,7 +57,7 @@ impl Plugin for CombatPlugin{
 		)
 		.add_system_set(SystemSet::on_enter(GameState::Combat)
 			.with_system(set_combat)
-
+			.with_system(spawn_combat_background)
 		)
 		.add_system_set(SystemSet::on_exit(GameState::Combat)
 			.with_system(despawn_button)
@@ -79,7 +79,26 @@ pub struct Enemy;
 #[derive(Component)]
 pub struct Background;
 
-
+fn spawn_combat_background(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,    
+){
+    println!("We should have drawn the background");
+    let background_handle = asset_server.load("Background_Combat.png");
+    let background_atlas = TextureAtlas::from_grid(background_handle, Vec2 {x:(0.), y: (0.)}, 1,1);
+    let background_atlas_handle = texture_atlases.add(background_atlas);
+    commands
+        .spawn_bundle(SpriteSheetBundle {
+            texture_atlas: background_atlas_handle.clone(),
+            sprite: TextureAtlasSprite {
+                index: 0,
+                ..default()
+            },
+            ..default()
+        })
+        .insert(Background);
+}
 
 fn set_combat(
 	mut commands: Commands,

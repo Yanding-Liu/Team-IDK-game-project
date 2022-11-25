@@ -107,15 +107,15 @@ pub fn button_system(
 							match player_stats.token{
 								1 => {
 									text.sections[0].style.font_size = 20.0;
-									text.sections[0].value = "Does 2 dmg,\nreceive 1 TP".to_string();
+									text.sections[0].value = "Does 2 dmg,\nreceive 1 TP,\nuses all tokens".to_string();
 								}
 								2 => {
 									text.sections[0].style.font_size = 20.0;
-									text.sections[0].value = "Does 6 dmg,\ntake 1 TP\nfrom enemy".to_string();
+									text.sections[0].value = "Does 6 dmg,\ntake 1 TP\nfrom enemy\nuses all tokens".to_string();
 								}
 								3 => {
 									text.sections[0].style.font_size = 20.0;
-									text.sections[0].value = "Does 10 dmg,\nrecover full TP".to_string();
+									text.sections[0].value = "Does 10 dmg,\nrecover full TP\nuses all tokens".to_string();
 								}
 								_ => {
 									text.sections[0].style.font_size = 20.0;
@@ -404,35 +404,43 @@ pub fn combat_button_system2(
 					if enemy_stats.block { 
 						enemy_stats.health -= log.player_damage/2;
 						enemy_stats.token = std::cmp::min(enemy_stats.max_token, enemy_stats.token+1);
+						player_stats.token = if player_stats.use_token {0} else {player_stats.token};
 					} else if enemy_stats.guard {
 						player_stats.health -= log.player_damage*2;
-						if enemy_stats.token < enemy_stats.max_token {
+						player_stats.token = if player_stats.use_token {0} else {player_stats.token};
+						/*if enemy_stats.token < enemy_stats.max_token {
 							enemy_stats.token += 1;
-						}
+						}*/
 					} else {
 						enemy_stats.health -= log.player_damage - log.enemy_damage;
-						if !player_stats.use_token {
+						player_stats.token = if player_stats.use_token {0} else {std::cmp::min(player_stats.max_token, player_stats.token+1)};
+						enemy_stats.token = if enemy_stats.use_token {0} else {enemy_stats.token};
+						/*if !player_stats.use_token {
 							if player_stats.token < player_stats.max_token {
 								player_stats.token += 1;
 							}
-						}
+						}*/
 					}
 				} else if log.enemy_damage > log.player_damage {
 					if player_stats.block { 
 						player_stats.health -= log.enemy_damage/2;
 						player_stats.token = std::cmp::min(player_stats.max_token, player_stats.token+1);
+						enemy_stats.token = if enemy_stats.use_token {0} else {enemy_stats.token};
 					} else if player_stats.guard {
 						enemy_stats.health -= log.enemy_damage*2;
-						if player_stats.token < player_stats.max_token {
+						enemy_stats.token = if enemy_stats.use_token {0} else {enemy_stats.token};
+						/*if player_stats.token < player_stats.max_token {
 							player_stats.token += 1;
-						}
+						}*/
 					} else {
 						player_stats.health -= log.enemy_damage - log.player_damage;
-						if !enemy_stats.use_token {
+						player_stats.token = if player_stats.use_token {0} else {player_stats.token};
+						enemy_stats.token = if enemy_stats.use_token {0} else {std::cmp::min(enemy_stats.max_token, enemy_stats.token+1)};
+						/*if !enemy_stats.use_token {
 							if enemy_stats.token < enemy_stats.max_token {
 								enemy_stats.token += 1;
 							}
-						}
+						}*/
 					}
 				}
 				player_stats.health = std::cmp::max(0, std::cmp::min(player_stats.max_health, player_stats.health + log.player_health_change));

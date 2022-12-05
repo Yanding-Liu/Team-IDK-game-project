@@ -265,7 +265,7 @@ fn move_player(
 		player_transform.translation.z,
 	);
 
-	fog_collide(&player_transform.translation, &fog_tiles, commands);
+	//fog_collide(&player_transform.translation, &fog_tiles, commands);
 
 	let target_x = player_transform.translation + Vec3::new(x_vel,0.,0.) * TILE_SIZE;
 	if collision_check(target_x, &collision_tiles)
@@ -319,7 +319,7 @@ fn move_player(
 	//println!("{}",d.distance);
 
 	if !starting_pos.eq(&player_transform.translation) && d.distance >= 400. {
-		random_encounter(game_state);
+		//random_encounter(game_state);
 		restart_dt(dis);
 	}
 }

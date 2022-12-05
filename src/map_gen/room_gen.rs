@@ -7,15 +7,15 @@ use bevy::{
 use super::Room;
 
 // Create bounds on where to put in window
-pub const X_BOUND: f32 = 50.;
+pub const X_BOUND: f32 = 70.;
 pub const Y_BOUND: f32 = 50.;
 
 // Create bounds on size of room
 const SIZE_LOWER_BOUND: f32 = 3.;  //7
 pub const SIZE_UPPER_BOUND: f32 = 7.;  //15
 
-pub const NUM_OF_ROOMS: i32 = 15;
-const ROOM_BUFFER_SPACE: f32 = 10.;
+pub const NUM_OF_ROOMS: i32 = 25;
+const ROOM_BUFFER_SPACE: f32 = 7.;
 
 // pub const X_BOUND: f32 = 15.;
 // pub const Y_BOUND: f32 = 15.;

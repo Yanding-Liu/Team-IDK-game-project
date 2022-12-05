@@ -44,13 +44,13 @@ impl Plugin for RoomRendPlugin {
     fn build(&self, app: &mut App) {
         app
         //.add_system(check_field_of_view)
-        .add_startup_system(create_fog)
+        //.add_startup_system(create_fog)
         .add_system_set(SystemSet::on_update(GameState::Overworld)
 		)
 		.add_system_set(SystemSet::on_enter(GameState::Overworld)
             .with_system(create_random_room)
             .with_system(render_objects)
-            .with_system(render_fog)
+            //.with_system(render_fog)
 		)
 		.add_system_set(SystemSet::on_exit(GameState::Overworld)
 			.with_system(derender_all_rooms)
